@@ -1,0 +1,65 @@
+<div class="widgets individual_profile">
+
+    {% if participant.type == "team" %}
+        <div class="user_name">
+            <div class="useravada">
+
+                {% if fundraiser.image is defined %}
+                    <img src="{{ fundraiser.image }}" alt="Fundraiser Image"/>
+                {% endif %}
+            </div>
+            <h4 class="team_name">{{ fundraiser.getTeamName }}</h4>
+            <p>&ldquo;thank you for helping <br>
+                me reach my goal&rdquo;</p>
+        </div>
+        <div class="total_goal">
+            {% if fundraiser.showProgressbar == 1 and fundraiser.partPercentile <= 100 %}
+                <div id="progressBar6" class="default">
+                    <img src="{{ constants.template_directory }}/assets/images/layer22.png"
+                         alt="">
+                    <div></div>
+                </div>
+                <script>
+                    jQuery(window).load(function () {
+                        progressBar({{ fundraiser.partPercentile }}, jQuery('#progressBar6'), {{ fundraiser.goal }}, {{ fundraiser.raised }} );
+                    });
+                </script>
+
+            {% endif %}
+            <h5><b>${{ fundraiser.raised | number_format }}</b> of
+                ${{ fundraiser.goal | number_format }} goal</h5>
+        </div>
+    {% else %}
+        <div class="user_name">
+            <div class="useravada">
+                <a href="#" id="avada_change" class="">
+                    {{ function('get_avatar' , participant.id, 170 ) }}
+                </a>
+            </div>
+
+            <h4>{{ participant.userInfo.first_name ~ " " ~ participant.userInfo.last_name }}</h4>
+
+            <p>&ldquo;thank you for helping <br>
+                me reach my goal&rdquo;</p>
+        </div>
+        <div class="total_goal">
+            {% if fundraiser.showProgressbar == 1 and participant.partPercentile <= 100 %}
+                <div id="progressBar6" class="big-white">
+                    <img src="{{ constants.template_directory }}/assets/images/layer22.png"
+                         alt="">
+                    <div></div>
+                </div>
+                <script>
+                    jQuery(document).ready(function () {
+                        progressBar( {{ participant.partPercentile }}, jQuery('#progressBar6'), {{ participant.goal }}, {{ participant.raised }});
+                    });
+                </script>
+
+            {% endif %}
+
+            <h5><b>${{ participant.raised | number_format }}</b> of
+                ${{ participant.goal | number_format }} goal </h5>
+        </div>
+
+    {% endif %}
+</div>

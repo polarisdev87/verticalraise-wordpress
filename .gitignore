@@ -1,0 +1,9 @@
+
+.DS_Store
+/node_modules/
+wordpress/node_modules/
+wordpress/docker/dev/wordpress
+wordpress/docker/dev/mysql
+wordpress/docker/dev/certs
+wordpress/docker/dev/logs/nginx/error.log
+wordpress/docker/dev/logs/nginx/access.log

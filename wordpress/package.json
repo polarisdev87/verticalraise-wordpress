@@ -1,0 +1,16 @@
+{
+  "name": "@verticalraise/wordpress",
+  "description": "VerticalRaise Wordpress",
+  "version": "v1.0.200401-rc1",
+  "engines": {
+    "node": ">= v9.2.1",
+    "php": ">= v7.3.0"
+  },
+  "scripts": {
+    "start:dev:local": "docker-compose --f ./docker/dev/docker-compose.yml up"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0"
+  },
+  "dependencies": {}
+}

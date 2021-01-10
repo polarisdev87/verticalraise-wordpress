@@ -1,0 +1,51 @@
+<h3>enter your Donation amount </h3>
+
+<div class="donationbox">
+    <div class="currency matchheight">{{ constants.currency }}</div>
+    <input id="donate_amount" class="amount_ip" autocomplete="off" placeholder=""
+           onkeypress='return event.charCode >= 48 && event.charCode <= 57' type="number"
+           name="amount" value="{% if request.donation_amount %}{{ request.donation_amount }}{% endif %}"
+           required="required"
+           maxlength="18"
+           min="10"
+           oninvalid="this.setCustomValidity('Please enter at least $10')"
+           oninput="setCustomValidity('')" tabindex="1"/>
+    <div class="decimal matchheight">.00</div>
+    <div style="clear: both;"></div>
+</div>
+
+
+<h3 class="select_prefill">or select a donation pre-fill</h3>
+
+<ul class="select_donation clearfix">
+    <li>
+        <input type="radio" {% if request.donation_amount == 1000 %}{{ 'checked' }}{% endif %}
+               name="donation" id="amt1" onclick="prefill(1000);">
+        <label for="amt1">1000</label>
+    </li>
+    <li>
+        <input type="radio" {% if request.donation_amount == 500 %}{{ 'checked' }}{% endif %}
+               name="donation" id="amt2" onclick="prefill(500);">
+        <label for="amt2">500</label>
+    </li>
+    <li>
+        <input type="radio" {% if request.donation_amount == 250 %}{{ 'checked' }}{% endif %}
+               name="donation" id="amt3" onclick="prefill(250);">
+        <label for="amt3">250</label>
+    </li>
+    <li>
+        <input type="radio" {% if request.donation_amount == 150 %}{{ 'checked' }}{% endif %}
+               name="donation" id="amt4" onclick="prefill(150);">
+        <label for="amt4">150</label>
+    </li>
+    <li>
+        <input type="radio" {% if request.donation_amount == 100 %}{{ 'checked' }}{% endif %}
+               name="donation" id="amt5" onclick="prefill(100);">
+        <label for="amt5">100</label>
+    </li>
+    <li>
+        <input type="radio" {% if request.donation_amount == 50 %}{{ 'checked' }}{% endif %}
+               name="donation" id="amt6" onclick="prefill(50);">
+        <label for="amt6">50</label>
+    </li>
+</ul>

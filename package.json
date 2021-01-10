@@ -1,0 +1,24 @@
+{
+  "name": "verticalraise-mono-repo",
+  "version": "1.0.0",
+  "description": "Idea of the mono-repo is to combine all development work for websites, apis and assets into a single repo to share resources and help keep identity assets inline with each other.",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "@prettier/plugin-php": "^0.13.0",
+    "prettier": "^2.0.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/verticalraise/verticalraise-mono-repo.git"
+  },
+  "author": "VerticalRaise",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/verticalraise/verticalraise-mono-repo/issues"
+  },
+  "homepage": "https://gitlab.com/verticalraise/verticalraise-mono-repo#readme"
+}

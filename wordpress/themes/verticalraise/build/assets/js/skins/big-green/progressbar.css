@@ -1,0 +1,52 @@
+.big-green {
+    padding: 0px;
+    height: 55px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    display: flex;
+    position: relative;
+}
+
+.big-green img {
+    width: 100%;
+    position: absolute;
+    height: 100%;
+    top: 0px;
+    left: 0;
+}
+
+.big-green div {
+    margin: 4px 2px;
+    text-indent: 99999px;
+    overflow: hidden;
+    background: url(../../../images/green-progress2.png);
+    background-repeat: no-repeat;
+    height: 45px;
+    /*margin: 2px 0px;*/
+}
+@media screen and (max-width: 768px) {
+    .big-green {
+        height: 40px;
+    }
+    .big-green div {
+        height: 35px;
+    }
+}
+@media screen and (max-width: 479px) {
+    .big-green {
+
+    }
+
+    .big-green img {
+        width: 100%;
+        position: absolute;
+        height: 67%;
+        top: 0px;
+        left: 0;
+    }
+
+    .big-green div {
+        height: 23px;
+        margin: 3px;
+    }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "@verticalraise/wordpress",
+  "description": "VerticalRaise Wordpress",
+  "version": "v1.0.200401-rc1",
+  "engines": {
+    "node": ">= v9.2.1",
+    "php": ">= v7.3.0"
+  },
+  "scripts": {
+    "start": "cp ../env/local.env ./build/env/global.env && docker-compose up",
+    "start:bundles": "concurrently --kill-others -n theme,docker \"npm run bundle:theme\" \"npm run start\"",
+    "start:dev:local:old": "cp ../env/local.env ./build/env/global.env && docker-compose --file ./docker-compose.remote.yml up",
+    "start:dev:local": "docker-compose --env-file ./docker/dev/.env -f  ./docker/dev/docker-compose.yml config",
+    "start:uat": "cp ../env/uat.env ./build/env/global.env && docker-compose up",
+    "start:prod": "cp ../env/prod.env ./build/env/global.env && docker-compose up",
+    "init:assets": "concurrently --kill-others -n material,theme \"npm run init:material\" \"npm run init:theme\"",
+    "init:material": "cd ../material && npm install && cd ../wordpress",
+    "init:plugins": "cd ./plugins/material-gutenberg && npm install && cd ../../",
+    "init:theme": "cd ./themes/wildcrafter2019 && npm install && cd ../../",
+    "bundle:material": "cd ../material && npm run bundle:watch",
+    "bundle:plugins": "cd ./plugins/material-gutenberg && npm run bundle:watch",
+    "bundle:theme": "cd ./themes/verticalraise && npm run bundle:watch"
+  },
+  "devDependencies": {
+    "concurrently": "^4.1.0"
+  },
+  "dependencies": {}
+}

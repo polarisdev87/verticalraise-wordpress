@@ -1,0 +1,47 @@
+{% extends "templates/base.twig" %}
+
+{% block html_head_container %}
+    {{ function('get_header', 'donation') }}
+{% endblock %}
+
+
+{% block content %}
+    <style>
+        .loader {
+            display: none;
+            width: 32px;
+            height: 32px;
+            background-color: transparent;
+            border-radius: 5px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            margin-left: -16px;
+            text-align: center;
+            z-index: 3;
+            overflow: auto;
+        }
+    </style>
+    <main>
+        <!--LANDING PAGE MAIN CONTENT start-->
+        <div class="landing_page_main_content donation_page {% if constants.is_mobile_new and not function('is_user_logged_in') %}no_padding{% endif %}">
+            <div class="container">
+                <div class="row">
+                    {% include "templates/donation/right-side.twig" %}
+
+                    {% include "templates/donation/left-side.twig" %}
+
+                </div>
+            </div>
+        </div>
+        <div class="loader">
+            <center>
+                <img class="loading-image"
+                     src="{{ constants.template_directory }}/assets/images/ajax-loader.gif"
+                     alt="loading..">
+            </center>
+        </div>
+        <!--LANDING PAGE MAIN CONTENT end-->
+    </main>
+    {% include "templates/donation/scripts.twig" %}
+{% endblock %}

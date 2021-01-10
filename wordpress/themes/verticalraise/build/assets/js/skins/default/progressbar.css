@@ -1,0 +1,55 @@
+.default {
+    padding: 0px;
+    height: 55px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    display: flex;
+    position: relative;
+}
+
+.default img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    top: 0px;
+
+    left: 0;
+}
+
+.default div {
+    margin: 2px 3px;
+    text-indent: 99999px;
+    overflow: hidden;
+    background: url(../../../images/white-progress.png);
+    background-repeat: no-repeat;
+    height: 50px;
+
+
+}
+@media screen and (max-width: 768px) {
+    .default {
+        height: 40px;
+    }
+    .default div {
+        height: 35px;
+    }
+}
+@media screen and (max-width: 479px) {
+    .default img {
+        position: absolute;
+        height: 60%;
+        top: 0px;
+        width: 100%;
+        left: 0;
+    }
+
+    .default {
+        height: 55px;
+    }
+
+    .default div {
+        height: 30px;
+        margin: 1px;
+    }
+}

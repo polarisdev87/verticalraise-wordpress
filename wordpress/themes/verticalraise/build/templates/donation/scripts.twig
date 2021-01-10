@@ -1,0 +1,386 @@
+
+<script>
+    $(window).load(function () {
+        comment_moreless(150, $(".comment_text"));
+        //            fbLogin('avadar');
+    })
+</script>
+<script>
+    $(function () {
+        $(".change_participant").on("click", function () {
+            $(".fb_info select").toggle()
+        })
+
+
+        $(".fb_info select").change(function () {
+            var sel_participant_name = $('#participant-select option:selected').data('participant-name');
+
+            if ( sel_participant_name != undefined ) {
+                $("p.selecte_paticipant_name span.participant_name").text(sel_participant_name);
+                $(".fb_info select").toggle()
+                $(".change_participant").text('(Change)')
+            } else {
+                $("p.selecte_paticipant_name span.participant_name").text('');
+                $(".change_participant").text('')
+            }
+        })
+    })
+
+    // Prefill
+    function prefill(amount) {
+        jQuery('#donate_amount').val(amount);
+        var donation_box = jQuery('.donationbox #donate_amount')[0];
+        donation_box.setCustomValidity('');
+        var _href = jQuery('a.facebook_info').attr('href');
+        jQuery('a.facebook_info').attr('href', _href + '&amount=' + amount);
+    }
+
+    // Anonymous
+    jQuery('input[name="anonymous"]').change(function () {
+        var val = jQuery('input[name="anonymous"]').val();
+        var _href = jQuery('a.facebook_info').attr('href');
+        jQuery('a.facebook_info').attr('href', _href + '&anonymous=' + val);
+    });
+
+    // FB Url
+    jQuery('input[name="amount"]').change(function () {
+        var val = jQuery('input[name="amount"]').val();
+        var _href = jQuery('a.facebook_info').attr('href');
+        jQuery('a.facebook_info').attr('href', _href + '&amount=' + val);
+    });
+
+    // Validate email address
+    function isValidEmailAddress(emailAddress) {
+        var pattern = /^([a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+(\.[a-z\d!#$%&'*+\-\/=?^_`{|}~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]+)*|"((([ \t]*\r\n)?[ \t]+)?([\x01-\x08\x0b\x0c\x0e-\x1f\x7f\x21\x23-\x5b\x5d-\x7e\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|\\[\x01-\x09\x0b\x0c\x0d-\x7f\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))*(([ \t]*\r\n)?[ \t]+)?")@(([a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\d\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.)+([a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]|[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF][a-z\d\-._~\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]*[a-z\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])\.?$/i;
+        return pattern.test(emailAddress);
+    }
+    ;
+
+    function textCounter(field, field2, maxlimit) {
+        var countfield = $("#" + field2);
+        if ( $(field).val().length >= maxlimit ) {
+            countfield.text('Max Characters: ' + maxlimit);
+            return false;
+
+        } else {
+            var remain = maxlimit - $(field).val().length;
+            countfield.text(remain + ' characters remain.')
+        }
+    }
+
+</script>
+<script>
+    //Facebook Login
+    window.fbAsyncInit = function () {
+        // FB JavaScript SDK configuration and setup
+        FB.init({
+            appId: '{{ constants.facebook_app_id }}', // FB App ID
+            cookie: true, // enable cookies to allow the server to access the session
+            xfbml: true, // parse social plugins on this page
+            version: 'v2.8' // use graph api version 2.8
+        });
+    };
+
+    // Load the JavaScript SDK asynchronously
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if ( d.getElementById(id) )
+            return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+    // Facebook login with JavaScript SDK
+    function fbLogin(param) {
+        jQuery('#fbLogin').hide();
+        jQuery('.ajax_loader').show();
+        FB.login(function (response) {
+            if ( response.authResponse ) {
+                // Get and display the user profile data
+                getFbUserData(param);
+            } else {
+                document.getElementById('status').innerHTML = 'User cancelled login or did not fully authorize.';
+            }
+        }, {
+            scope: 'email,public_profile,user_birthday'
+        });
+    }
+    // Fetch the user profile data from facebook
+    function getFbUserData(param) {
+        FB.api('/me', {
+                locale: 'en_US',
+                fields: 'id,first_name,last_name,email,link,gender,locale,picture,birthday'
+            },
+            function (response) {
+                console.log(response);
+
+                if ( param == 'info' ) {
+                    jQuery('#fname').val(response.first_name);
+                    jQuery('#lname').val(response.last_name);
+                    jQuery('#email').val(response.email);
+
+                    var fname = jQuery('#fname')[0];
+                    var lname = jQuery('#lname')[0];
+                    var email = jQuery('#email')[0];
+                    fname.setCustomValidity('');
+                    lname.setCustomValidity('');
+                    email.setCustomValidity('');
+                } else {
+                    var image = response.picture.data.url;
+                    $(".comment_part img.user").attr("src", image);
+                    jQuery('#avatar_url').val(image);
+                }
+            });
+    }
+    //END
+
+</script>
+
+
+<script src="https://checkout.stripe.com/checkout.js"></script>
+<script>
+    jQuery('#donationForm').submit(function (e) {
+
+
+        e.preventDefault();
+        //            $("#donationForm").valid()
+
+        // Launch Stripe payment window
+        var site_name = "{{ constants.site_name }}";
+        var fundraiser_title = "{{ fundraiser.title }}";
+        var amount = jQuery('input[name="amount"]').val() * {{ constants.multiple }};
+        var email = $('#email').val();
+        //var username = $("#fname").val() + " " + $("#lname").val();
+
+        function anonymous() {
+            if ( jQuery('input[name="anonymousCheck"]').is(":checked") ) {
+                return 1;
+            }
+            return 0;
+        }
+
+        function description() {
+            var line = fundraiser_title;
+
+            return line;
+        }
+
+        function site_title() {
+
+            var line = "VerticalRaise";
+            var uid = jQuery('#participant-select option:selected').val();
+            if ( uid != 0 ) {
+                var participant_name = jQuery('#participant-select option:selected').data('participant-name');
+                line = participant_name;
+            }
+            return line;
+            //get Donation User name from input box
+
+        }
+
+        // Stripe Window
+        $("#payment-button").buttonLoader('start');
+
+
+        var handler = StripeCheckout.configure({
+            key: '{{ constants.stripe_publishable_key }}',
+            image: '',
+            locale: 'auto',
+            {%  if fundraiser.stripe_connect != 1 %}
+            source: function (source) {
+                jQuery('.PaymentOptions').hide();
+                jQuery('#loading').show();
+                jQuery.ajax({
+                    beforeSend: function () {
+                        jQuery('.loader').show();
+                        jQuery('.cover').show();
+                    },
+                    complete: function () {
+                        jQuery('.loader').hide();
+                        jQuery('.loader').hide();
+                    },
+                    type: "POST",
+                    url: "{{ constants.site_url }}/ajax-payment",
+                    data: {
+                        stripeToken: source.id,
+                        stripeEmail: source.owner.email,
+                        stripe_connect: jQuery('input[name=stripe_connect]').val(),
+                        stripe_account_id: jQuery('input[name=stripe_account_id]').val(),
+                        our_fee: jQuery('input[name=our_fee]').val(),
+                        rep_code: jQuery('input[name=rep_code]').val(),
+                        amount: jQuery('input[name="amount"]').val(),
+                        anonymous: anonymous(),
+                        fname: jQuery('#fname').val(),
+                        lname: jQuery('#lname').val(),
+                        email: jQuery('#email').val(),
+                        fundraiser_id: jQuery('input[name="fundraiser_id"]').val(),
+                        uid: jQuery('#participant-select option:selected').val(),
+                        media: jQuery('input[name="media"]').val(),
+                        comment: jQuery('#comment_txt').val(),
+                        avatar_url: jQuery('#avatar_url').val(),
+                        nonce: '{{  function('wp_create_nonce', "make - payment_#fundraiser.id#_" ) }}'
+                    },
+
+                    success: function (data) {
+                        jQuery('.PaymentError').hide();
+                        var fundraiser_id = jQuery('input[name="fundraiser_id"]').val();
+                        var fname = jQuery('#fname').val();
+                        var lname = jQuery('#lname').val();
+                        var email = jQuery('#email').val();
+                        var media = jQuery('#media').val();
+                        var uid = jQuery('#participant-select option:selected').val();
+                        var amount = jQuery('input[name="amount"]').val();
+                        var data1 = JSON.parse(data);
+//                            console.log("message----", data1,"----", data1.message);
+                        if ( data1.message == 'success' ) {
+
+                            var transaction_id = data1.message2;
+
+                            window.location.href = "{{ constants.site_url }}/thank-you-payment/?fundraiser_id=" +
+                                fundraiser_id + "&fname=" + fname + "&lname=" + lname + "&email=" +
+                                email + "&media=" + media + "&uid=" + uid + "&transaction_id=" + transaction_id + "&tamount=" + amount;
+                        } else {
+                            console.log(data);
+                            jQuery('.PaymentError').show();
+                            jQuery('#loading').hide();
+                            jQuery('.PaymentOptions').show();
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                        jQuery('.PaymentError').show();
+                        jQuery('#loading').hide();
+                        jQuery('.PaymentOptions').show();
+                    },
+                });
+            },
+            {%  else  %}
+            token: function (token) {
+                jQuery('.PaymentOptions').hide();
+                jQuery('#loading').show();
+                jQuery.ajax({
+                    beforeSend: function () {
+                        jQuery('.loader').show();
+                        jQuery('.cover').show();
+                    },
+                    complete: function () {
+                        jQuery('.loader').hide();
+                        jQuery('.loader').hide();
+                    },
+                    type: "POST",
+                    url: "{{ constants.site_url }}/ajax-payment",
+                    data: {
+                        stripeToken: token.id,
+                        stripeEmail: token.email,
+                        stripe_connect: jQuery('input[name=stripe_connect]').val(),
+                        stripe_account_id: jQuery('input[name=stripe_account_id]').val(),
+                        our_fee: jQuery('input[name=our_fee]').val(),
+                        rep_code: jQuery('input[name=rep_code]').val(),
+                        amount: jQuery('input[name="amount"]').val(),
+                        anonymous: anonymous(),
+                        fname: jQuery('#fname').val(),
+                        lname: jQuery('#lname').val(),
+                        email: jQuery('#email').val(),
+                        fundraiser_id: jQuery('input[name="fundraiser_id"]').val(),
+                        uid: jQuery('#participant-select option:selected').val(),
+                        media: jQuery('input[name="media"]').val(),
+                        comment: jQuery('#comment_txt').val(),
+                        avatar_url: jQuery('#avatar_url').val(),
+                        nonce: '{{  function('wp_create_nonce', "make - payment_#fundraiser.id#_" ) }}'
+                    },
+
+                    success: function (data) {
+                        jQuery('.PaymentError').hide();
+                        var fundraiser_id = jQuery('input[name="fundraiser_id"]').val();
+                        var fname = jQuery('#fname').val();
+                        var lname = jQuery('#lname').val();
+                        var email = jQuery('#email').val();
+                        var media = jQuery('#media').val();
+                        var uid = jQuery('#participant-select option:selected').val();
+                        var amount = jQuery('input[name="amount"]').val();
+
+                        if ( data.message == 'success' ) {
+                            var transaction_id = data.message2;
+                            window.location.href = "{{ constants.site_url }}/thank-you-payment/?fundraiser_id=" +
+                                fundraiser_id + "&fname=" + fname + "&lname=" + lname + "&email=" +
+                                email + "&media=" + media + "&uid=" + uid + "&transaction_id=" + transaction_id + "&tamount=" + amount;
+                        } else {
+                            console.log(data);
+                            jQuery('.PaymentError').show();
+                            jQuery('#loading').hide();
+                            jQuery('.PaymentOptions').show();
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e);
+                        jQuery('.PaymentError').show();
+                        jQuery('#loading').hide();
+                        jQuery('.PaymentOptions').show();
+                    },
+                });
+            },
+            {% endif %}
+            opened: function () {
+                $("#payment-button").buttonLoader('stop');
+            }
+        });
+
+        handler.open({
+            image: "{{ fundraiser.image }}",
+            name: "" + site_title() + "",
+            description: "" + description() + "",
+            amount: amount,
+            email: email,
+            allowRememberMe: false
+        });
+
+        e.preventDefault();
+
+        window.addEventListener('popstate', function () {
+            handler.close();
+        });
+    });
+
+    jQuery("form input, form select, form textarea").on("invalid", function () {
+        jQuery(this).closest('form').addClass('invalid');
+    });
+
+
+    $(document).ready(function () {
+        /*$('#donationForm input[name=email]').on('blur', function () {
+         email_verification($(this));
+         })*/
+        $('#donationForm input[name=email]').on('keyup', function () {
+            email_checker($(this));
+        });
+        $('#donationForm #suggestion').on('click', 'span', function () {
+            // On click, fill in the field with the suggestion and remove the hint
+            $('#donationForm input[name=email]').val($(this).text());
+            $('#donationForm #suggestion').fadeOut(200, function () {
+                $(this).empty();
+                //email_verification($('#donationForm input[name=email]'));
+            });
+        });
+    });
+
+
+
+
+    function email_checker(emailObj) {
+        $('#donationForm #invalid').empty();
+        var topLevelDomains = ["com", "net", "org"];
+        emailObj.mailcheck({
+            topLevelDomains: topLevelDomains,
+            suggested: function (element, suggestion) {
+                $('#donationForm #suggestion').fadeIn(200);
+                $('#donationForm #suggestion').html("Did you mean <span >" + suggestion.full + "</span> ?");
+            },
+            empty: function (element) {
+                $("#donationForm #suggestion").empty();
+            }
+        });
+    }
+
+</script>

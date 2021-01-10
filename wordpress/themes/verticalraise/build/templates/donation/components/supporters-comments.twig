@@ -1,0 +1,47 @@
+<div class="widgets supporters_comments">
+    <h3>Thank you to our supporters!</h3>
+    <ul class="supporters_list">
+
+        {% if participant.type == 'team' %}
+            {% set supporters = fundraiser.supporters %}
+        {% else %}
+            {% set supporters = participant.supporters %}
+        {% endif %}
+
+        {% if supporters | length > 0 %}
+
+            {% for supporter in supporters %}
+                <li class="{% if loop.index0 > 2 and constants.is_mobile_new == true %}hideClass{% endif %}">
+                    <div class="user">
+                        <div class="img" style="background-color: black;">
+                            <img src="{{ supporter.supporter_avatar }}">
+                        </div>
+                        <div class="detail">
+                            <h5>{{ supporter.donation_amount }}</h5>
+                            <b>{{ supporter.donator_name }}</b>
+                            <h6>{{ supporter.days_ago }}</h6>
+                        </div>
+                    </div>
+                    <div class="like">
+                        <img src="{{ constants.template_directory }}/assets/images/like.png" alt="">
+                    </div>
+
+                    {% if supporter.comment %}
+                        <p class="comment_text">
+                            &ldquo;{{ supporter.comment }}&rdquo;
+                        </p>
+                    {% endif %}
+                </li>
+
+            {% endfor %}
+
+            {% if constants.is_mobile_new == true and supporters | length > 2 %}
+                <li class="extraBtn">
+                    <a class="morelist">
+                        <b>+</b> Show More
+                    </a>
+                </li>
+            {% endif %}
+        {% endif %}
+    </ul>
+</div>

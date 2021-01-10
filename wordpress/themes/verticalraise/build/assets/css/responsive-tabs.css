@@ -1,0 +1,146 @@
+/*	Responsive Tabs v1.4, Copyright 2014, Joe Mottershaw, https://github.com/joemottershaw/
+//	======================================================================================= */
+
+/*	Table of Contents
+//	==================================================
+//		#Reset
+//		#Themes
+
+
+/*	#Reset
+//	================================================== */
+
+	/* Standard */
+		.responsive-tabs {
+			margin: 0;
+			padding: 0;
+			list-style-type: none;
+			position: relative;
+		}
+
+		.responsive-tabs li {
+			width: 125px;
+			margin: 0;
+			text-align: center;
+			line-height: 50px;
+			float: left;
+		}
+
+		.responsive-tabs li a {
+			display: block;
+			padding: 0 10px;
+			text-decoration: none;
+		}
+
+		.responsive-tabs li.active { font-weight: bold; }
+
+		.responsive-tabs-content { margin-bottom: 20px; }
+
+		.responsive-tabs-content.bm-remove	{ margin-bottom: 0;    }
+		.responsive-tabs-content.bm-smaller	{ margin-bottom: 5px;  }
+		.responsive-tabs-content.bm-small	{ margin-bottom: 10px; }
+		.responsive-tabs-content.bm-medium	{ margin-bottom: 20px; }
+		.responsive-tabs-content.bm-large	{ margin-bottom: 30px; }
+		.responsive-tabs-content.bm-larger	{ margin-bottom: 40px; }
+
+		.responsive-tabs-content .responsive-tabs-panel { padding: 20px; }
+
+		.responsive-tabs-content .responsive-tabs-panel .responsive-tab-title { display: none; }
+
+	/* Tabs Left */
+		.responsive-tabs.responsive-tabs-left {
+			width: 150px;
+			float: left;
+		}
+
+		.responsive-tabs.responsive-tabs-left li {
+			text-align: left;
+			float: none;
+		}
+
+		.responsive-tabs-content.responsive-tabs-left { overflow: hidden; }
+
+	/* Tabs Right */
+		.responsive-tabs.responsive-tabs-right {
+			width: 150px;
+			float: right;
+		}
+
+		.responsive-tabs.responsive-tabs-right li {
+			text-align: right;
+			float: none;
+		}
+
+		.responsive-tabs-content.responsive-tabs-right { overflow: hidden; }
+
+	@media only screen and (max-width: 767px) {
+		.responsive-tabs li { display: none; }
+
+		.responsive-tabs-content .responsive-tabs-panel,
+		.responsive-tabs-content .responsive-tabs-panel .responsive-tab-title { display: block; }
+	}
+
+
+/*	#Themes
+//	================================================== */
+
+	/* Standard */
+		.responsive-tabs-default .responsive-tabs li {
+			border: 1px solid #DDD;
+			border-right: 0;
+			background: #EEE;
+			cursor: pointer;
+			position: relative;
+			z-index: 999999;
+		}
+
+		.responsive-tabs-default .responsive-tabs li:last-child {
+			border-right: 1px solid #DDD;
+		}
+
+		.responsive-tabs-default .responsive-tabs li.active {
+			border-bottom: 1px solid #FFF;
+			background: #FFF;
+		}
+
+		.responsive-tabs-default .responsive-tabs-content {
+			border: 1px solid #DDD;
+			position: relative;
+			top: -1px;
+			z-index: 999;
+		}
+
+		.responsive-tabs-default .responsive-tabs-content .responsive-tab-title { color: #0B8593; }
+
+	/* Tabs Left */
+		.responsive-tabs-default .responsive-tabs.responsive-tabs-left { left: 1px; }
+
+		.responsive-tabs-default .responsive-tabs.responsive-tabs-left li {
+			width: 100%;
+			border-right: 1px solid #DDD;
+			border-bottom: 0;
+			line-height: 50px;
+		}
+
+		.responsive-tabs-default .responsive-tabs.responsive-tabs-left li:last-child { border-bottom: 1px solid #DDD; }
+
+		.responsive-tabs-default .responsive-tabs.responsive-tabs-left li.active { border-right: 1px solid #FFF;}
+
+		.responsive-tabs-default .responsive-tabs-content.responsive-tabs-left { top: 0; }
+
+	/* Tabs Right */
+		.responsive-tabs-default .responsive-tabs.responsive-tabs-right { right: 1px; }
+
+		.responsive-tabs-default .responsive-tabs.responsive-tabs-right li {
+			width: 100%;
+			border-right: 1px solid #DDD;
+			border-bottom: 0;
+			border-left: 1px solid #DDD;
+			line-height: 50px;
+		}
+
+		.responsive-tabs-default .responsive-tabs.responsive-tabs-right li:last-child { border-bottom: 1px solid #DDD; }
+
+		.responsive-tabs-default .responsive-tabs.responsive-tabs-right li.active { border-left: 1px solid #FFF;}
+
+		.responsive-tabs-default .responsive-tabs-content.responsive-tabs-right { top: 0; }

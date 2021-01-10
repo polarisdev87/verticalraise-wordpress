@@ -1,0 +1,138 @@
+
+<div class="col-md-7 col-sm-7 col-xs-12 col eql col_left">
+
+    <form id="donationForm">
+
+        {% include "templates/donation/components/amount-box.twig" %}
+
+        <div class="don_anonymous">
+            <div class="checkboxDIv">
+                <input type="checkbox" class="icheckbox_flat" name="anonymousCheck" value="1"
+                        {% if request.anonymous == 1 %}{{ 'checked' }}{% endif %}
+                       tabindex="2"/>
+                <label for="anonymous" class="anonymousLabel" style="">
+                    Make my donation anonymous
+                </label>
+                <input type="hidden" name="anonymous" id="AnonymousCheckStatus" value="0"/>
+            </div>
+            <script>
+                $(".anonymousLabel").on("click", function () {
+                    $(".iCheck-helper").trigger("click");
+                })
+            </script>
+        </div>
+
+        <div class="fb_info">
+            <div class="field_row clearfix">
+                <div class="half_col">
+                    <input id="fname" type="text" name="fname" placeholder="First Name*"
+                           required="" tabindex="3"
+                           class="ip"/>
+                </div>
+                <div class="half_col">
+                    <input id="lname" type="text" name="lname" placeholder="Last Name*"
+                           required="" tabindex="4"
+                           class="ip"/>
+                </div>
+            </div>
+
+            <div class="field_row">
+                <div class="full_col email_field">
+                    <input id="email" type="email" name="email" value="{% if request.semail is defined %}{{ request.semail }}{% endif %}"
+                           placeholder="Your Email for Receipt*" required="" tabindex="5" autocomplete="off"
+                           class="ip"/>
+                    <div class="tc-result" title="Validated by TheChecker.co" >
+                        <img class="tc-result-icon" src="{{ constants.template_directory }}/assets/images/error.png">
+                    </div>
+                    <p id="suggestion" ></p>
+                    <div id="invalid"></div>
+                </div>
+            </div>
+
+            <div class="field_row">
+                <div class="full_col">
+                    <p class="selecte_paticipant_name">
+                        <label>Participant: </label>
+                        <span class="participant_name">{% if participant.type == 'team' %}{{ fundraiser.teamName }} {% else %} {{ participant.userInfo.first_name ~ ' ' ~ participant.userInfo.last_name  }} {% endif %}</span>
+                        <span class="change_participant"> {% if request.uid is defined %}(Change){% endif %}</span>
+                    </p>
+
+                    <select id="participant-select" name="participant-select"
+                            oninvalid="this.setCustomValidity('Please select a participant')"
+                            oninput="setCustomValidity('')" tabindex="6" style="display: {{ participant.type == 'participant' ? 'none' : 'block' }};">
+                        <option value="">Select Participant to Support</option>
+                        {% if fundraiser.participants | length > 0 %}
+                            <option value="0" data-participant-name="{{ fundraiser.teamName }}">{{ fundraiser.teamName }}</option>
+                            {% for uid, user_name in fundraiser.participants %}
+                                <option {% if uid == request.uid %}selected{% endif %} value="{{ uid }}" data-participant-name="{{ user_name }}">{{ user_name }}</option>
+                            {% endfor %}
+                        {% endif %}
+                    </select>
+                </div>
+            </div>
+
+            <input type="hidden" name="fundraiser_id" value="{{ fundraiser.id }}"/>
+
+            {% if media %}
+                <input type="hidden" name="media" id="media" value="{{ request.media }}"/>
+            {% endif %}
+
+            <div class="comment_part">
+                <div class="fb_add">
+                    <div class="table_wrap">
+                        <div class="wrap">
+                            <div class="fbuser">
+                                {% if constants.is_mobile_new %}
+                                    <img class="user" src="{{ constants.template_directory }}/assets/images/small-user-avatar.png" alt="">
+                                {% else %}
+                                    <img class="user" src="{{ constants.template_directory }}/assets/images/user-avatar.png" alt="">
+                                {% endif %}
+                            </div>
+                            <p>
+                                <a href="javascript:void(0);" onclick="fbLogin('avadar')">
+                                    <img src="{{ constants.template_directory }}/assets/images/fb.png"
+                                         alt="">
+                                    Add
+                                </a>
+                            </p>
+                            <input type="hidden" name="avatar_url" id="avatar_url" value="default"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="comment_area">
+                                        <textarea name="comment" id="comment_txt" placeholder="Leave a comment (optional)"
+                                                  maxlength="250"
+                                                  onkeyup="textCounter(this, 'counter', 250)"></textarea>
+                    <p id="counter">Allowed max length is 250 characters.</p>
+
+                </div>
+            </div>
+
+
+            <div class="agree_terms">
+                <p>By continuing you are agreeing to Vertical Raise’s
+                    <a href="{{ function( 'get_the_permalink', 157 ) }}" target="_blank">Terms</a>
+                    and <a href="{{ function( 'get_the_permalink', 379 ) }}" target="_blank">Privacy Policy</a></p>
+            </div>
+
+            <div class="donate_btn">
+                <button id="payment-button" type="submit" name="continue" data-loading="Donating..."
+                        class="submit_btn has-spinner" tabindex="7">Donate Now
+                </button>
+            </div>
+
+            <div class="card">
+                <img src="{{ constants.template_directory }}/assets/images/cards.png"
+                     alt="">
+            </div>
+
+        </div>
+
+        <input type="hidden" name="rep_code" value ="{{ fundraiser.coachCode }}" />
+        <input type="hidden" name="stripe_connect" value ="{{ fundraiser.stripeConnect }}" />
+        <input type="hidden" name="our_fee" value ="{{ fundraiser.ourFee }}" />
+        <input type="hidden" name="stripe_account_id" value="{{ fundraiser.accountId }}" />
+
+    </form>
+
+</div>
